@@ -3,10 +3,11 @@ LABEL maintainer="Chad Jones <cj@patientsky.com>"
 ENV ACCEPT_EULA Y
 USER root
 RUN apt-get update \
-  && apt-get install -y supervisor wget \
+  && apt-get install -y supervisor wget net-tools \
   && wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
   && dpkg -i packages-microsoft-prod.deb \
   && apt-get update \
   && apt-get install -y apt-transport-https dotnet-sdk-3.1 apt-transport-https aspnetcore-runtime-3.1
 COPY supervisord.conf /etc/supervisord.conf
+COPY scripts/start-app.sh /scripts/start-app.sh
 CMD /usr/bin/supervisord -n -c /etc/supervisord.conf
